@@ -80,3 +80,10 @@
     max-width: 680px;
     padding: 0 15px;
 }
+
+.footer {
+    width: 100%;
+
+    position: relative;
+    bottom: 0px;
+}
