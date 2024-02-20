@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\backend\categoryController;
+use App\Http\Controllers\backend\articleController;
 //category
+use App\Http\Controllers\backend\categoryController;
 use App\Http\Controllers\backend\dashboardcontroller;
 use Illuminate\Support\Facades\Route;
 
@@ -23,3 +24,4 @@ Route::get('/', function () {
 Route::get('/dashboard', [dashboardcontroller::class, 'index']);
 
 Route::resource('/category', categoryController::class);
+Route::resource('/article', articleController::class);

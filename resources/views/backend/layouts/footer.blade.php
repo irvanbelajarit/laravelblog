@@ -1,4 +1,4 @@
-<footer class="footer mt-auto py-3 bg-body-tertiary">
+<footer class="footer mt-auto py-3 bg-body-tertiary float-end">
     <div class="container">
         <span class="text-body-secondary">Place sticky footer content here.</span>
     </div>
@@ -13,3 +13,5 @@
     integrity="sha384-eI7PSr3L1XLISH8JdDII5YN/njoSsxfbrkCTnJrzXt+ENP5MOVBxD+l6sEG4zoLp" crossorigin="anonymous">
 </script>
 <script src="{{ asset('js/dashboard.js') }}"></script>
+
+@stack('js')

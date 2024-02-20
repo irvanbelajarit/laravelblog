@@ -190,11 +190,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center gap-2" href="#">
+                    <a class="nav-link d-flex align-items-center gap-2" href="{{ url('/article') }}">
                         <svg class="bi">
-                            <use xlink:href="#cart" />
+                            <use xlink:href="#file-earmark-text" />
                         </svg>
-                        Products
+                        Article
                     </a>
                 </li>
                 <li class="nav-item">

@@ -31,4 +31,5 @@
     <!-- Custom styles for this template -->
     <link href="{{ asset('css/dashboard.css') }}" rel="stylesheet">
     <link href="{{ asset('css/dashboardstyle.css') }}" rel="stylesheet">
+    @stack('css')
 </head>
