@@ -4,9 +4,9 @@ namespace App\Http\Controllers\backend;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticlePostRequest;
+use App\Http\Requests\ArticleUpdateRequest;
 use App\Models\article;
 use App\Models\Category;
-use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -90,7 +90,9 @@ class articleController extends Controller
     public function show(string $id)
     {
         //
-        return 'OK';
+        $article = article::find($id);
+
+        return view('backend.article.show', compact('article'));
     }
 
     /**
@@ -99,14 +101,45 @@ class articleController extends Controller
     public function edit(string $id)
     {
         //
+        $article = article::find($id);
+        $category = Category::all();
+
+        return view('backend.article.edit', compact('article', 'category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ArticleUpdateRequest $request, string $id)
     {
-        //
+        $data = $request->validated();
+        //check image
+        // Check if an image is present in the request
+        if ($request->hasFile('image')) {
+            // Process the image here
+            $file = $request->file('image');
+            $filename = time().'.'.$file->getClientOriginalExtension();
+            $file->move('images', $filename);
+
+            //delete oldImg from public / images
+            // Delete the old image from public/images
+            if (isset($request->oldImg)) {
+                $oldImagePath = public_path('images/').$request->oldImg;
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+            }
+            $data['image'] = $filename;
+
+        } else {
+            $data['image'] = $request->oldImg;
+        }
+        $data['slug'] = Str::slug($data['title']);
+        $data['user_id'] = 1; //sementara
+
+        article::find($id)->update($data);
+
+        return redirect()->route('article.index')->with('success', 'Article updated successfully');
     }
 
     /**
