@@ -25,3 +25,7 @@ Route::get('/dashboard', [dashboardcontroller::class, 'index']);
 
 Route::resource('/category', categoryController::class);
 Route::resource('/article', articleController::class);
+
+Route::group(['prefix' => 'laravel-filemanager', 'middleware' => ['guest']], function () {
+    \UniSharp\LaravelFilemanager\Lfm::routes();
+});

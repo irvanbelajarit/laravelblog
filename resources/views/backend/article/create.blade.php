@@ -58,7 +58,7 @@
 
                     <div class="mb-3">
                         <label for="body" class="form-label">Body</label>
-                        <textarea class="form-control" id="body" name="body" rows="3">{{ old('body') }}</textarea>
+                        <textarea class="form-control" id="myEditor" name="body" rows="3">{{ old('body') }}</textarea>
                     </div>
                 </div>
             </div>
@@ -69,6 +69,14 @@
                     <div class="mb-3">
                         <label for="image" class="form-label">Image (max 2 Mb)</label>
                         <input class="form-control" type="file" id="image" name="image">
+
+                        {{-- img thumb --}}
+                        <div class="mt-1">
+
+                            <img src="" alt="" id="preview" width="200px"
+                                class="img-thumbnail img-preview">
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -110,4 +118,26 @@
 @push('js')
     {{-- js datatable --}}
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+    <script>
+        var options = {
+            filebrowserImageBrowseUrl: '/laravel-filemanager?type=Images',
+            filebrowserImageUploadUrl: '/laravel-filemanager/upload?type=Images&_token=',
+            filebrowserBrowseUrl: '/laravel-filemanager?type=Files',
+            filebrowserUploadUrl: '/laravel-filemanager/upload?type=Files&_token='
+
+        }
+
+        CKEDITOR.replace('myEditor', options);
+
+        //img preview
+
+        document.getElementById('image').addEventListener('change', function() {
+            const reader = new FileReader();
+            reader.addEventListener('load', () => {
+                document.getElementById('preview').src = reader.result;
+            });
+            reader.readAsDataURL(this.files[0]);
+        });
+    </script>
 @endpush
