@@ -40,7 +40,7 @@ class articleController extends Controller
                     return '<div>
                                 <a href="'.route('article.show', $row->id).'" class="btn btn-info btn-sm">View</a>
                                 <a href="'.route('article.edit', $row->id).'" class="btn btn-warning btn-sm">Edit</a>
-                                <a href="'.route('article.destroy', $row->id).'" class="btn btn-danger btn-sm">Delete</a>
+                                <a href="#" onclick="deleteData('.$row->id.')" class="btn btn-danger btn-sm">Delete</a>
                             </div>';
 
                 })
@@ -147,6 +147,19 @@ class articleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        //delete img
+        $data = article::find($id);
+        if (isset($data->image)) {
+            $oldImagePath = public_path('images/').$data->image;
+            if (file_exists($oldImagePath)) {
+                unlink($oldImagePath);
+            }
+        }
+
+        article::find($id)->delete();
+
+        return response()->json([
+            'success' => 'Article deleted successfully',
+        ]);
     }
 }

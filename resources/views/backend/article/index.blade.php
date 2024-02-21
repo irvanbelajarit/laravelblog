@@ -21,6 +21,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
+        <div class="swal" data-swal="{{ session('success') }}"></div>
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -65,7 +66,19 @@
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/2.0.0/js/dataTables.bootstrap5.js"></script>
-
+    {{-- sweet alert --}}
+    <script>
+        const swal = $('.swal').data('swal');
+        if (swal) {
+            Swal.fire({
+                title: 'Success',
+                text: swal,
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 1500
+            });
+        }
+    </script>
     <script>
         $(document).ready(function() {
             $('#DataTable').DataTable({
@@ -113,5 +126,42 @@
                 ]
             });
         });
+    </script>
+
+    <script>
+        function deleteData(e) {
+            let id = e;
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        // csrf
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: "DELETE",
+                        url: "{{ url('/article') }}" + "/" + id,
+                        success: function(response) {
+                            console.log(response);
+                            Swal.fire(
+                                'Deleted!',
+                                'Your file has been deleted.',
+                                'success'
+                            )
+                            location.reload();
+                        }
+                    });
+
+                }
+            })
+
+        }
     </script>
 @endpush
